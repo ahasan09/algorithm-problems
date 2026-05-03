@@ -8,7 +8,9 @@ function convertToWord(num) {
     if (num < 0) throw new Error('Negative numbers are not supported.');
     if (num === 0) return 'zero';
     if (num > 9999) {
-        alert('Larger numbers than 9999 are currently not supported.');
+        if (typeof alert === 'function') {
+            alert('Larger numbers than 9999 are currently not supported.');
+        }
         return;
     }
     //the case of 0 - 20
@@ -50,4 +52,10 @@ function numberToWords(start, end, tableId) {
     table.innerHTML = html;
 }
 
-numberToWords(1, 1000, 'table');
+if (typeof document !== 'undefined') {
+    numberToWords(1, 1000, 'table');
+}
+
+if (typeof module !== 'undefined') {
+    module.exports = { convertToWord, numberToWords };
+}

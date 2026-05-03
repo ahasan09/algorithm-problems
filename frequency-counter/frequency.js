@@ -1,14 +1,11 @@
+function normalizeText(text) {
+    return text.toLowerCase().replace(/[^a-z'\s]+/g, "");
+}
 
- //document.getElementById("textInput").value="Safia world usa. Safia from bangladesh."
-
-document.getElementById("countButton").onclick = function () {
-    let typedText = document.getElementById("textInput").value;
-    typedText = typedText.toLowerCase();
-
-    typedText = typedText.replace(/[^a-z'\s]+/g, "");
-
-    //Character Count
+function countCharacters(text) {
+    const typedText = normalizeText(text);
     const letterCounts = {};
+
     for (let i = 0; i < typedText.length; i++) {
         let currentLetter = typedText[i];
         if (letterCounts[currentLetter] == undefined) {
@@ -17,19 +14,16 @@ document.getElementById("countButton").onclick = function () {
         else {
             letterCounts[currentLetter]++;
         }
-        // do something for each letter.
     }
 
-    for (let letter in letterCounts) {
-        const span = document.createElement("span");
-        const textContent = document.createTextNode('"' + letter + "\": " + letterCounts[letter] + ", ");
-        span.appendChild(textContent);
-        document.getElementById("lettersDiv").appendChild(span);
-    }
+    return letterCounts;
+}
 
-    //Words Count
+function countWords(text) {
+    const typedText = normalizeText(text);
     const words = typedText.split(" ");
     const wordCounts = {};
+
     for (let i = 0; i < words.length; i++) {
         let currentWord = words[i];
         if (wordCounts[currentWord] == undefined) {
@@ -38,15 +32,32 @@ document.getElementById("countButton").onclick = function () {
         else {
             wordCounts[currentWord]++;
         }
-        // do something for each letter.
     }
 
-    for (let word in wordCounts) {
+    return wordCounts;
+}
+
+function renderCounts(counts, elementId) {
+    for (let item in counts) {
         const span = document.createElement("span");
-        const textContent = document.createTextNode('"' + word + "\": " + wordCounts[word] + ", ");
+        const textContent = document.createTextNode('"' + item + '": ' + counts[item] + ', ');
         span.appendChild(textContent);
-        document.getElementById("wordsDiv").appendChild(span);
+        document.getElementById(elementId).appendChild(span);
     }
 }
 
+function bindFrequencyCounter() {
+    document.getElementById("countButton").onclick = function () {
+        let typedText = document.getElementById("textInput").value;
+        renderCounts(countCharacters(typedText), "lettersDiv");
+        renderCounts(countWords(typedText), "wordsDiv");
+    }
+}
 
+if (typeof document !== 'undefined') {
+    bindFrequencyCounter();
+}
+
+if (typeof module !== 'undefined') {
+    module.exports = { normalizeText, countCharacters, countWords };
+}

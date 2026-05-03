@@ -25093,3 +25093,7 @@ var words = [
     "zurich",
     "zygote"
     ]
+
+if (typeof module !== 'undefined') {
+    module.exports = words;
+}
